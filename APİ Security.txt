@@ -1,0 +1,61 @@
+API(Application Programming İnterface) Nedir? 
+    Api kendine ait verileri ve çalışma presipleri ile geliştirilmiş.Uygumaları birbirine ile iletişim geçmesine sağlar.
+
+1.Broken Object Authorization 
+    "Get" istediği atarken parametleri değiştirebiliriz. Örnepin:"Get htpps/host/vapi/vadi/user/id=4
+    yukarıdaki get istediği normal bir istek ama biz id değiştirebiliriz. 
+    Burada'ki açık tokenları kontrol etmeden hangi id varsa direk o id kullanıcısının bilgilerini veriyor.
+    Tokenlar kontrol edilip id ile token birbirine uyuyorsa response gelmesi lazım.
+   
+
+2.Excessive Data Exposure 
+    Kullanıcıya gereksiz bilgi gösterir. 
+    Örneğin:
+    1.  Doğru                         
+        {                             
+        İD:5
+        username:emre                   
+        }                         
+    2. Yanlış
+    {
+        id:5
+        username:emre
+        country:turkey
+        deveceid14
+    }
+
+3.Two Factor Authorization(iki Faktörlü kimlik doğrulama)
+    Kullanıcı login yaparken telefonuna veya mail'a gelen 4 haneli sayıyı hiç bilmeden BruteForce attck yaparak öğrenebiliriz.
+    Burada'da aynı hata var istek limiti sınırsız olmasından kaynaklanıyor. Bu açığın kapatmak için verilen kodu en fazla 2 kere girebilmemiz lazım.
+
+4.Broken Function Level Auth 
+    Normal Kullanıcı token'ı ile "GET" istediğindeki parametleri değiştirip admin ve diğer user account bilgilerini alabiliriz.
+    Örneğin:
+    "GET/api/api3.2/user/http1.1" gibi yapılacak olan istediği "GET/api/api3.2/users,admin,adminsrator/http1.1" gibi parametreler verebiliriz.
+    Burada'ki açık ise normal user token ile bu "Get" istekleri yapmaya yetkimiz olmaması lazım. 
+
+
+5.Miss Assigment
+    Bu açık kullanırarak bir normal Kullanıcının bir siteye "POST" isteği yaparken fazladan input verebilmesidir.
+    Örneğin:Bir Banka uygulaması veya bankanın web sitesine Kayıt olurken "POST" istediği yapıyoruz.
+        POST isteği.
+        1.
+        {  Normal bir post isteği 
+            İD:1
+            username:emre
+            password:emre123
+        }
+        2.
+        { Kötü Niyetli post istediği
+            İD:1
+            username:emre
+            password:emre123
+            credit:1000
+        }
+    Bu açığı kapatmak için ise Kullanıcıdan alınan inputlar kontrol edilip sonra sunucuya gönderilmesi lazım.
+
+6.SQL İnjection
+    Klasik sql komutlarının verilip login işlemin bypass edilmesi.
+    Bu açığı kapatmak için kullanıcıdan alınan inputların filtleme yapılması lazımki herhangi bir kod yazılmaması lazım.
+
+
